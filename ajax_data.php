@@ -1,35 +1,26 @@
 <?php
-
-// // Import PHPMailer classes into the global namespace
-// // These must be at the top of your script, not inside a function
-// use PHPMailer\PHPMailer\PHPMailer;
-// use PHPMailer\PHPMailer\Exception;
-
-// Load Composer's autoloader
-require 'SimplyBlock.php';
+require_once __DIR__ . '/vendor/autoload.php';
+require_once 'config.php';
+use SimplySign\SimplySign;
 
 $post = $_POST;
 
 if ($post['cmd'] == 'create_hash') {
-    $data_array = array('text_sample' => $post['text_sample']);
-    $option['url'] = 'https://testnet.simplyblock.io/v1/common/create_hash/';
-    $option['public_key'] = 'hmac_pub_1';
-    $option['private_key'] = '';
-    $option['data'] = $data_array;
 
-    $simplyblock = new SimplyBlock($option);
-    $response = $simplyblock->createHash();
-    echo $response;
+    // Required Data
+    $data = array('text_sample' => $post['text_sample']);
+    $simplySign = new SimplySign(PUBLIC_KEY, PRIVATE_KEY);
+    $url ='https://testnet.simplyblock.io/v1/common/create_hash/';
+    echo $response = $simplySign->GatewayRequest($url, $data);
 
 } else if ($post['cmd'] == 'verify_hash') {
-    $data_array = array('hash' => $post['data_hash2']);
-    $option['url'] = 'https://testnet.simplyblock.io/v1/eth/verify_hash/';
-    $option['public_key'] = 'hmac_pub_1';
-    $option['private_key'] = 'hmac_priv_1';
-    $option['data'] = $data_array;
 
-    $simplyblock = new SimplyBlock($option);
-    $response =  $simplyblock->verifyHash();
+    // Required Data
+    $data = array('hash' => $post['data_hash2']);
+    $simplySign = new SimplySign(PUBLIC_KEY, PRIVATE_KEY);
+    $url = 'https://testnet.simplyblock.io/v1/eth/verify_hash/';
+    $response = $simplySign->GatewayRequest($url, $data);
+
 
     $response_obj = json_decode($response);
     $verification_status = $response_obj->data->status;
@@ -63,16 +54,11 @@ if ($post['cmd'] == 'create_hash') {
 
 } else if ($post['cmd'] == 'broadcast_hash') {
 
-    $data_array = array('hash' => $post['data_hash']);
-    $option['url'] = 'https://testnet.simplyblock.io/v1/eth/broadcast_hash/';
-    $option['public_key'] = 'hmac_pub_1';
-    $option['private_key'] = 'hmac_priv_1';
-    $option['data'] = $data_array;
-
-    $simplyblock = new SimplyBlock($option);
-    $response =  $simplyblock->broadcastHash();
-
-    echo $response;
+    // Required Data
+    $data = array('hash' => $post['data_hash']);
+    $simplySign = new SimplySign(PUBLIC_KEY, PRIVATE_KEY);
+    $url = 'https://testnet.simplyblock.io/v1/eth/broadcast_hash/';
+    echo $response = $simplySign->GatewayRequest($url, $data);
 }
 
 die;

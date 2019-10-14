@@ -1,1 +1,1 @@
-# bitcoinsample# notary-demo
+# notary-demo

@@ -1,2 +1,11 @@
 {
+	"name": "simplyblock/notary-demo",
+	"description": "Notary demo app using sb-php-sdk",
+	"require": {
+		"simplyblock/sb-php-sdk": "^1.0"
+	},
+	"repositories": [{
+		"type": "github",
+		"url": "https://github.com/simplyblock/sb-php-sdk.git"
+	}]
 }
